@@ -1,189 +1,149 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-char matrix[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
 
-int rightDiagnol();
-int leftDiagnol();
-int horizontal();
-int vertical();
+char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
 
-void result(int rowSize,int colsize);
-int input(int counter);
+int checkwin();
+void board();
 
-void maze();
-int condition = 0;
-
-void store();
-void findIndex(char playerSymbol, char index);
-main()
+int main()
 {
-    int counterForplayer = 1, hori = 0, vert = 0, leftd = 0, rightd = 0;
-    bool flag = true;
-    int number;
-    while (flag != false)
-    {
-    backtomain:
-        maze();
-        hori = horizontal();
-        vert = vertical();
-        leftd = leftDiagnol();
-        rightd = rightDiagnol();
-        if (hori > 2)
-        {
-            
-            break;
-        }
-        // cout<<vert;
-        else if (vert > 2)
-        {
+	int player = 1,i,choice;
 
-            break;
-        }
-        else if (rightd >= 2)
+    char mark;
+    do
+    {
+        board();
+        player=(player%2)?1:2;
+
+        cout << "Player " << player << ", enter a number:  ";
+        cin >> choice;
+
+        mark=(player == 1) ? 'X' : 'O';
+
+        if (choice == 1 && square[1] == '1')
+
+            square[1] = mark;
+        else if (choice == 2 && square[2] == '2')
+
+            square[2] = mark;
+        else if (choice == 3 && square[3] == '3')
+
+            square[3] = mark;
+        else if (choice == 4 && square[4] == '4')
+
+            square[4] = mark;
+        else if (choice == 5 && square[5] == '5')
+
+            square[5] = mark;
+        else if (choice == 6 && square[6] == '6')
+
+            square[6] = mark;
+        else if (choice == 7 && square[7] == '7')
+
+            square[7] = mark;
+        else if (choice == 8 && square[8] == '8')
+
+            square[8] = mark;
+        else if (choice == 9 && square[9] == '9')
+
+            square[9] = mark;
+        else
         {
-            cout << rightd;
-            break;
+            cout<<"Invalid move ";
+
+            player--;
+            cin.ignore();
+            cin.get();
         }
-        else if (leftd >= 2)
-        {
-            break;
-        }
+        i=checkwin();
 
-        counterForplayer = input(counterForplayer);
-        goto backtomain;
-    }
-}
-int input(int counter)
-{
+        player++;
+    }while(i==-1);
+    board();
+    if(i==1)
 
-    char colInput, player1Symbol = 'O', player2Symbol = 'X';
-    // int row, col;
-    char square;
-    cout << " PLAYER\t" << counter << endl;
-    cout << "ENTER NUMBER" << endl;
-    cin >> square;
-    // cout << "column" << endl;
-    // cin >> colInput;
-    // col = colInput - 'A';
-    if (counter == 1)
-    {
+        cout<<"==>\aPlayer "<<--player<<" win ";
+    else
+        cout<<"==>\aGame draw";
 
-        system("cls");
-        findIndex(player1Symbol, square);
-        // matrix[row][col] ='O';
-        return counter + 1;
-    }
-    else if (counter == 2)
-    {
-        system("cls");
-        findIndex(player2Symbol, square);
-        // matrix[row][col] = 'X';
-        return counter - 1;
-    }
-}
-void findIndex(char playerSymbol, char index)
-{
-    for (int rowcheck = 0; rowcheck < 3; rowcheck++)
-    {
-        for (int colcheck = 0; colcheck < 3; colcheck++)
-        {
-            if (matrix[rowcheck][colcheck] == index)
-            {
-                matrix[rowcheck][colcheck] = playerSymbol;
-            }
-        }
-    }
-}
-int horizontal()
-{
-
-    int count = 0;
-    for (int row = 0; row < 3; row++)
-    {
-        for (int col = 0; col < 2; col++)
-        {
-
-            if (matrix[row][col] == matrix[row][col + 1])
-            {
-            if(count>1){
-                result(row,col);}
-                count++;
-            }
-        }
-    }
-    return count;
-}
-void result(int rowSize,int colsize)
-{
-    if(matrix[rowSize][colsize]=='O')
-    {
-        cout<<"PLAYER 1 IS WINNNER";
-    }
-    else if(matrix[rowSize][0]=='X')
-    {
-        cout<<"PLAYER 2 IS WINNNER";
-    }
-}
-int vertical()
-{
-    int count = 0;
-    for (int col = 0; col < 3; col++)
-    {
-        for (int row = 0; row < 2; row++)
-        {
-            if (matrix[row][col] == matrix[row + 1][col])
-            {
-                count++;
-            }
-        }
-    }
-
-    return count;
+    cin.ignore();
+    cin.get();
+    return 0;
 }
 
-int rightDiagnol()
-{
-    int col = 0;
-    int count = 0;
-    for (int row = 0; row < 2; row++)
-    {
-        if (matrix[row][col] == matrix[row + 1][col + 1])
-        {
-            count++;
-        }
+/*********************************************
+    FUNCTION TO RETURN GAME STATUS
+    1 FOR GAME IS OVER WITH RESULT
+    -1 FOR GAME IS IN PROGRESS
+    O GAME IS OVER AND NO RESULT
+**********************************************/
 
-        col++;
-    }
-    return count;
-}
-int leftDiagnol()
+int checkwin()
 {
-    int row = 0;
-    int count = 0;
-    for (int col = 2; col > 0; col--)
-    {
-        if (matrix[row][col] == matrix[row + 1][col - 1])
-        {
+    if (square[1] == square[2] && square[2] == square[3])
 
-            count++;
-        }
-        row++;
-    }
-    return count;
+        return 1;
+    else if (square[4] == square[5] && square[5] == square[6])
+
+        return 1;
+    else if (square[7] == square[8] && square[8] == square[9])
+
+        return 1;
+    else if (square[1] == square[4] && square[4] == square[7])
+
+        return 1;
+    else if (square[2] == square[5] && square[5] == square[8])
+
+        return 1;
+    else if (square[3] == square[6] && square[6] == square[9])
+
+        return 1;
+    else if (square[1] == square[5] && square[5] == square[9])
+
+        return 1;
+    else if (square[3] == square[5] && square[5] == square[7])
+
+        return 1;
+    else if (square[1] != '1' && square[2] != '2' && square[3] != '3' 
+                    && square[4] != '4' && square[5] != '5' && square[6] != '6' 
+                  && square[7] != '7' && square[8] != '8' && square[9] != '9')
+
+        return 0;
+    else
+        return -1;
 }
-void maze()
+
+
+/*******************************************************************
+     FUNCTION TO DRAW BOARD OF TIC TAC TOE WITH PLAYERS MARK
+********************************************************************/
+
+
+void board()
 {
     system("cls");
-    cout << "TIC TOE GAME" << endl;
+    cout << "\n\n\tTic Tac Toe\n\n";
+
+    cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
     cout << endl;
-    char stright = '|', underscore = '-';
-    for (int row = 0; row < 3; row++)
-    {
-        for (int col = 0; col < 3; col++)
-        {
-            cout << "\t" << stright << matrix[row][col];
-        }
-        cout << endl;
-        cout << "\t------------------" << endl;
-    }
+
+    cout << "     |     |     " << endl;
+    cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
+
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+
+    cout << "  " << square[4] << "  |  " << square[5] << "  |  " << square[6] << endl;
+
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+
+    cout << "  " << square[7] << "  |  " << square[8] << "  |  " << square[9] << endl;
+
+    cout << "     |     |     " << endl << endl;
 }
+
+/*******************************************************************
+                END OF PROJECT
+********************************************************************/
